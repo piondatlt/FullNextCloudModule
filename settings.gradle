@@ -7,3 +7,6 @@ include ':app'
 //        substitute module('com.github.nextcloud.android-common:ui') using project(':ui')
 //    }
 //}
+include ':sohoa'
+include ':cameraView'
+include ':commonRes'

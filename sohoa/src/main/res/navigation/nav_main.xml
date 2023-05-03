@@ -1,0 +1,120 @@
+<?xml version="1.0" encoding="utf-8"?>
+<navigation xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/nav_main.xml"
+    app:startDestination="@id/splashFragment">
+
+    <fragment
+        android:id="@+id/splashFragment"
+        android:name="example.datlt.nextcloud.framework.presentation.splash.SplashFragment"
+        android:label="SplashFragment"
+        tools:layout="@layout/fragment_splash">
+        <action
+            android:id="@+id/action_splashFragment_to_homeFragment"
+            app:destination="@id/homeFragment" />
+    </fragment>
+    <fragment
+        android:id="@+id/homeFragment"
+        android:name="example.datlt.nextcloud.framework.presentation.home.HomeFragment"
+        android:label="fragment_home"
+        tools:layout="@layout/fragment_home">
+        <action
+            android:id="@+id/action_homeFragment_to_selectImageFragment"
+            app:destination="@id/selectImageFragment" />
+        <action
+            android:id="@+id/action_homeFragment_to_readFileFragment"
+            app:destination="@id/readFileFragment" />
+        <action
+            android:id="@+id/action_homeFragment_to_cameraFragment"
+            app:destination="@id/cameraFragment" />
+        <action
+            android:id="@+id/action_homeFragment_to_nextCloudFragment"
+            app:destination="@id/nextCloudFragment" />
+    </fragment>
+    <fragment
+        android:id="@+id/selectImageFragment"
+        android:name="example.datlt.nextcloud.framework.presentation.listimage.SelectImageFragment"
+        android:label="fragment_select_image"
+        tools:layout="@layout/fragment_select_image">
+        <action
+            android:id="@+id/action_selectImageFragment_to_cropFragment"
+            app:destination="@id/cropFragment" />
+    </fragment>
+
+    <fragment
+        android:id="@+id/cropFragment"
+        android:name="example.datlt.nextcloud.framework.presentation.crop.CropFragment"
+        android:label="fragment_crop"
+        tools:layout="@layout/fragment_crop">
+
+        <argument
+            android:name="listPhoto"
+            app:argType="example.datlt.nextcloud.database.entities.Photo[]" />
+        <action
+            android:id="@+id/action_cropFragment_to_setColorFragment"
+            app:destination="@id/setColorFragment" />
+
+    </fragment>
+    <fragment
+        android:id="@+id/setColorFragment"
+        android:name="example.datlt.nextcloud.framework.presentation.color.SetColorFragment"
+        android:label="fragment_set_color"
+        tools:layout="@layout/fragment_set_color">
+        <action
+            android:id="@+id/action_setColorFragment_to_convertFragment"
+            app:destination="@id/convertFragment" />
+    </fragment>
+    <fragment
+        android:id="@+id/convertFragment"
+        android:name="example.datlt.nextcloud.framework.presentation.convert.ConvertFragment"
+        android:label="fragment_convert"
+        tools:layout="@layout/fragment_convert" >
+        <action
+            android:id="@+id/action_convertFragment_to_readFileFragment"
+            app:destination="@id/readFileFragment" />
+    </fragment>
+    <fragment
+        android:id="@+id/readFileFragment"
+        android:name="example.datlt.nextcloud.framework.presentation.readfile.ReadFileFragment"
+        android:label="fragment_read_file"
+        tools:layout="@layout/fragment_read_file" >
+
+        <argument
+            android:name="filePath"
+            android:defaultValue=""
+            app:argType="string" />
+
+    </fragment>
+    <fragment
+        android:id="@+id/cameraFragment"
+        android:name="example.datlt.nextcloud.framework.presentation.camera.CameraFragment"
+        android:label="fragment_camera"
+        tools:layout="@layout/fragment_camera" >
+        <action
+            android:id="@+id/action_cameraFragment_to_cameraImagePreviewFragment"
+            app:destination="@id/cameraImagePreviewFragment" />
+    </fragment>
+    <fragment
+        android:id="@+id/cameraImagePreviewFragment"
+        android:name="example.datlt.nextcloud.framework.presentation.camerapreview.CameraImagePreviewFragment"
+        android:label="fragment_camera_image_preview"
+        tools:layout="@layout/fragment_camera_image_preview" >
+
+        <argument
+            android:name="filePath"
+            android:defaultValue=""
+            app:argType="string" />
+
+        <action
+            android:id="@+id/action_cameraImagePreviewFragment_to_cropFragment"
+            app:destination="@id/cropFragment" />
+    </fragment>
+    <fragment
+        android:id="@+id/nextCloudFragment"
+        android:name="example.datlt.nextcloud.framework.presentation.nextcloud.NextCloudFragment"
+        android:label="fragment_next_cloud"
+        tools:layout="@layout/fragment_next_cloud" />
+
+
+</navigation>
