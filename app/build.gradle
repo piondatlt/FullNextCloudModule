@@ -265,7 +265,7 @@ dependencies {
     implementation 'org.apache.jackrabbit:jackrabbit-webdav:2.13.5' // remove after entire switch to lib v2
     implementation 'androidx.constraintlayout:constraintlayout:2.1.4'
     implementation 'androidx.legacy:legacy-support-v4:1.0.0'
-    implementation 'com.google.android.material:material:1.6.0'
+    implementation 'com.google.android.material:material:1.8.0'
     implementation 'com.jakewharton:disklrucache:2.0.2'
     implementation "androidx.appcompat:appcompat:$appCompatVersion"
     implementation 'androidx.webkit:webkit:1.5.0'
@@ -393,7 +393,7 @@ dependencies {
 
     implementation "io.coil-kt:coil:2.2.2"
 
-    implementation 'com.google.android.material:material:1.6.0'
+    implementation 'com.google.android.material:material:1.8.0'
 
 }
 
