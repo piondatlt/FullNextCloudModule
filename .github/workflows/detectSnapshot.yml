@@ -1,0 +1,17 @@
+name: "Detect snapshot"
+
+on:
+    pull_request:
+        branches: [ master, stable-* ]
+
+# Declare default permissions as read only.
+permissions: read-all
+
+jobs:
+    detectSnapshot:
+        runs-on: ubuntu-latest
+
+        steps:
+            -   uses: actions/checkout@755da8c3cf115ac066823e79a1e1788f8940201b # v3
+            -   name: Detect SNAPSHOT
+                run: scripts/analysis/detectSNAPSHOT.sh
