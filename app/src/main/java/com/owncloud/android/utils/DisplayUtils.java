@@ -52,14 +52,10 @@ import android.widget.FrameLayout;
 import android.widget.ImageView;
 import android.widget.Toast;
 
-import com.bumptech.glide.GenericRequestBuilder;
 import com.bumptech.glide.Glide;
 import com.bumptech.glide.load.engine.DiskCacheStrategy;
-import com.bumptech.glide.load.model.StreamEncoder;
-import com.bumptech.glide.load.resource.file.FileToStreamDecoder;
 import com.bumptech.glide.request.target.SimpleTarget;
 import com.bumptech.glide.request.target.Target;
-import com.caverock.androidsvg.SVG;
 import com.elyeproj.loaderviewlibrary.LoaderImageView;
 import com.google.android.material.snackbar.Snackbar;
 import com.nextcloud.client.account.CurrentAccountProvider;
@@ -80,9 +76,6 @@ import com.owncloud.android.ui.activity.FileDisplayActivity;
 import com.owncloud.android.ui.dialog.SortingOrderDialogFragment;
 import com.owncloud.android.ui.events.SearchEvent;
 import com.owncloud.android.ui.fragment.OCFileListFragment;
-import com.owncloud.android.utils.glide.CustomGlideUriLoader;
-import com.owncloud.android.utils.svg.SvgDecoder;
-import com.owncloud.android.utils.svg.SvgDrawableTranscoder;
 import com.owncloud.android.utils.theme.ViewThemeUtils;
 
 import org.greenrobot.eventbus.EventBus;
@@ -539,58 +532,20 @@ public final class DisplayUtils {
                                     SimpleTarget imageView,
                                     int placeholder) {
         try {
-            if (Uri.parse(iconUrl).getEncodedPath().endsWith(".svg")) {
-                downloadSVGIcon(currentAccountProvider, clientFactory, context, iconUrl, imageView, placeholder);
-            } else {
-                downloadPNGIcon(context, iconUrl, imageView, placeholder);
-            }
+            Glide.with(context).load(iconUrl).into(imageView);
         } catch (Exception e) {
             Log_OC.d(TAG, "not setting image as activity is destroyed");
         }
     }
 
-    private static void downloadPNGIcon(Context context, String iconUrl, SimpleTarget imageView, int placeholder) {
-        Glide
-            .with(context)
-            .load(iconUrl)
-            .centerCrop()
-            .placeholder(placeholder)
-            .error(placeholder)
-            .crossFade()
-            .into(imageView);
-    }
-
-    private static void downloadSVGIcon(CurrentAccountProvider currentAccountProvider,
-                                        ClientFactory clientFactory,
-                                        Context context,
-                                        String iconUrl,
-                                        SimpleTarget imageView,
-                                        int placeholder) {
-        GenericRequestBuilder<Uri, InputStream, SVG, Drawable> requestBuilder = Glide.with(context)
-            .using(new CustomGlideUriLoader(currentAccountProvider.getUser(), clientFactory), InputStream.class)
-            .from(Uri.class)
-            .as(SVG.class)
-            .transcode(new SvgDrawableTranscoder(context), Drawable.class)
-            .sourceEncoder(new StreamEncoder())
-            .cacheDecoder(new FileToStreamDecoder<>(new SvgDecoder()))
-            .decoder(new SvgDecoder())
-            .placeholder(placeholder)
-            .error(placeholder)
-            .animate(android.R.anim.fade_in);
 
 
-        Uri uri = Uri.parse(iconUrl);
-        requestBuilder
-            .diskCacheStrategy(DiskCacheStrategy.SOURCE)
-            .load(uri)
-            .into(imageView);
-    }
 
     public static Bitmap downloadImageSynchronous(Context context, String imageUrl) {
         try {
             return Glide.with(context)
-                .load(imageUrl)
                 .asBitmap()
+                .load(imageUrl)
                 .diskCacheStrategy(DiskCacheStrategy.NONE)
                 .skipMemoryCache(true)
                 .into(Target.SIZE_ORIGINAL, Target.SIZE_ORIGINAL)

@@ -26,27 +26,13 @@ import android.app.PendingIntent
 import android.appwidget.AppWidgetManager
 import android.content.Context
 import android.content.Intent
-import android.graphics.Bitmap
 import android.net.Uri
 import android.view.View
 import android.widget.RemoteViews
-import com.bumptech.glide.Glide
-import com.bumptech.glide.load.engine.DiskCacheStrategy
-import com.bumptech.glide.load.model.StreamEncoder
-import com.bumptech.glide.load.resource.file.FileToStreamDecoder
-import com.bumptech.glide.request.animation.GlideAnimation
-import com.bumptech.glide.request.target.AppWidgetTarget
 import com.nextcloud.android.lib.resources.dashboard.DashboardButton
 import com.nextcloud.client.account.CurrentAccountProvider
 import com.nextcloud.client.network.ClientFactory
 import com.owncloud.android.R
-import com.owncloud.android.utils.BitmapUtils
-import com.owncloud.android.utils.DisplayUtils.SVG_SIZE
-import com.owncloud.android.utils.glide.CustomGlideUriLoader
-import com.owncloud.android.utils.svg.SVGorImage
-import com.owncloud.android.utils.svg.SvgOrImageBitmapTranscoder
-import com.owncloud.android.utils.svg.SvgOrImageDecoder
-import java.io.InputStream
 import javax.inject.Inject
 
 class DashboardWidgetUpdater @Inject constructor(
@@ -75,7 +61,7 @@ class DashboardWidgetUpdater @Inject constructor(
             setAddButton(addButton, appWidgetId, this)
             setPendingReload(this, appWidgetId)
             setPendingClick(this)
-            loadIcon(appWidgetId, iconUrl, this)
+
         }
 
         appWidgetManager.updateAppWidget(appWidgetId, views)
@@ -137,29 +123,4 @@ class DashboardWidgetUpdater @Inject constructor(
         }
     }
 
-    private fun loadIcon(appWidgetId: Int, iconUrl: String, remoteViews: RemoteViews) {
-        val iconTarget = object : AppWidgetTarget(context, remoteViews, R.id.icon, appWidgetId) {
-            override fun onResourceReady(resource: Bitmap?, glideAnimation: GlideAnimation<in Bitmap>?) {
-                if (resource != null) {
-                    val tintedBitmap = BitmapUtils.tintImage(resource, R.color.black)
-                    super.onResourceReady(tintedBitmap, glideAnimation)
-                }
-            }
-        }
-
-        Glide.with(context)
-            .using(
-                CustomGlideUriLoader(accountProvider.user, clientFactory),
-                InputStream::class.java
-            )
-            .from(Uri::class.java)
-            .`as`(SVGorImage::class.java)
-            .transcode(SvgOrImageBitmapTranscoder(SVG_SIZE, SVG_SIZE), Bitmap::class.java)
-            .sourceEncoder(StreamEncoder())
-            .cacheDecoder(FileToStreamDecoder(SvgOrImageDecoder()))
-            .decoder(SvgOrImageDecoder())
-            .diskCacheStrategy(DiskCacheStrategy.SOURCE)
-            .load(Uri.parse(iconUrl))
-            .into(iconTarget)
-    }
 }

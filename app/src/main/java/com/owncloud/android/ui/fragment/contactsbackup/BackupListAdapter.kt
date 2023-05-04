@@ -26,7 +26,6 @@ import android.content.Context
 import android.content.res.Resources
 import android.database.Cursor
 import android.graphics.BitmapFactory
-import android.graphics.drawable.Drawable
 import android.provider.ContactsContract
 import android.view.LayoutInflater
 import android.view.View
@@ -36,8 +35,6 @@ import android.widget.CheckedTextView
 import android.widget.ImageView
 import com.afollestad.sectionedrecyclerview.SectionedRecyclerViewAdapter
 import com.afollestad.sectionedrecyclerview.SectionedViewHolder
-import com.bumptech.glide.request.animation.GlideAnimation
-import com.bumptech.glide.request.target.SimpleTarget
 import com.nextcloud.client.account.UserAccountManager
 import com.nextcloud.client.network.ClientFactory
 import com.owncloud.android.R
@@ -49,7 +46,6 @@ import com.owncloud.android.lib.common.utils.Log_OC
 import com.owncloud.android.ui.TextDrawable
 import com.owncloud.android.ui.fragment.contactsbackup.BackupListFragment.getDisplayName
 import com.owncloud.android.utils.BitmapUtils
-import com.owncloud.android.utils.DisplayUtils
 import com.owncloud.android.utils.theme.ViewThemeUtils
 import ezvcard.VCard
 import ezvcard.property.Photo
@@ -254,25 +250,8 @@ class BackupListAdapter(
             )
             imageView.setImageDrawable(drawable)
         } else if (url != null) {
-            val target = object : SimpleTarget<Drawable>() {
-                override fun onResourceReady(resource: Drawable?, glideAnimation: GlideAnimation<in Drawable>?) {
-                    imageView.setImageDrawable(resource)
-                }
 
-                override fun onLoadFailed(e: java.lang.Exception?, errorDrawable: Drawable?) {
-                    super.onLoadFailed(e, errorDrawable)
-                    imageView.setImageDrawable(errorDrawable)
-                }
-            }
 
-            DisplayUtils.downloadIcon(
-                accountManager,
-                clientFactory,
-                context,
-                url,
-                target,
-                R.drawable.ic_user
-            )
         }
     }
 

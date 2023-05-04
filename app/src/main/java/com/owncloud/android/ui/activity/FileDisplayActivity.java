@@ -815,37 +815,16 @@ public class FileDisplayActivity extends FileActivity
                 resultCode == UploadFilesActivity.RESULT_OK_AND_MOVE ||
                 resultCode == UploadFilesActivity.RESULT_OK_AND_DO_NOTHING ||
                 resultCode == UploadFilesActivity.RESULT_OK_AND_DELETE)) {
-
+            //datlt đoạn này uploadfile
             requestUploadOfFilesFromFileSystem(data, resultCode);
 
         } else if (requestCode == REQUEST_CODE__UPLOAD_FROM_CAMERA &&
             (resultCode == RESULT_OK || resultCode == UploadFilesActivity.RESULT_OK_AND_DELETE)) {
+            String path = data.getStringExtra("path");
+            String base = data.getStringExtra("basePath");
+            String[] array = {path};
+            requestUploadOfFilesFromFileSystem(base , array , requestCode);
 
-            new CheckAvailableSpaceTask(new CheckAvailableSpaceTask.CheckAvailableSpaceListener() {
-                @Override
-                public void onCheckAvailableSpaceStart() {
-                    Log_OC.d(this, "onCheckAvailableSpaceStart");
-                }
-
-                @Override
-                public void onCheckAvailableSpaceFinish(boolean hasEnoughSpaceAvailable, String... filesToUpload) {
-                    Log_OC.d(this, "onCheckAvailableSpaceFinish");
-
-                    if (hasEnoughSpaceAvailable) {
-                        File file = new File(filesToUpload[0]);
-                        File renamedFile = new File(file.getParent() + PATH_SEPARATOR + FileOperationsHelper.getCapturedImageName());
-
-                        if (!file.renameTo(renamedFile)) {
-                            DisplayUtils.showSnackMessage(getActivity(), "Fail to upload taken image!");
-                            return;
-                        }
-
-                        requestUploadOfFilesFromFileSystem(renamedFile.getParentFile().getAbsolutePath(),
-                                                           new String[]{renamedFile.getAbsolutePath()},
-                                                           FileUploader.LOCAL_BEHAVIOUR_DELETE);
-                    }
-                }
-            }, new String[]{FileOperationsHelper.createImageFile(getActivity()).getAbsolutePath()}).execute();
         } else if (requestCode == REQUEST_CODE__MOVE_FILES && resultCode == RESULT_OK) {
             exitSelectionMode();
             final Intent fData = data;
@@ -886,19 +865,24 @@ public class FileDisplayActivity extends FileActivity
     }
 
     private void requestUploadOfFilesFromFileSystem(Intent data, int resultCode) {
+        //datlt doan nay bat dau tai file len
         String[] filePaths = data.getStringArrayExtra(UploadFilesActivity.EXTRA_CHOSEN_FILES);
         String basePath = data.getStringExtra(UploadFilesActivity.LOCAL_BASE_PATH);
 
-        for (String path : filePaths){
-            Log.d("TESTNEXTCLOUD", "path : " + path); ///storage/emulated/0/Download/1521197951-brasol.vn-logo-dang-cong-san-viet-nam-flag-of-the-communist-party-of-vietnam.svg_-10340904.png
-        }
-        Log.d("TESTNEXTCLOUD", "basePath : " + basePath);  ///storage/emulated/0/Download
-        Log.d("TESTNEXTCLOUD", "resultCode : " + resultCode); //2
+//        for (String path : filePaths){
+//            Log.d("TESTNEXTCLOUD", "path : " + path); ///storage/emulated/0/Download/1521197951-brasol.vn-logo-dang-cong-san-viet-nam-flag-of-the-communist-party-of-vietnam.svg_-10340904.png
+//        }
+//        Log.d("TESTNEXTCLOUD", "basePath : " + UploadFilesActivity.EXTRA_CHOSEN_FILES);
+//        Log.d("TESTNEXTCLOUD", "basePath : " + UploadFilesActivity.LOCAL_BASE_PATH);
+//        Log.d("TESTNEXTCLOUD", "basePath : " + basePath);  ///storage/emulated/0/Download
+//        Log.d("TESTNEXTCLOUD", "resultCode : " + resultCode); //2
 
 
 
         requestUploadOfFilesFromFileSystem(basePath, filePaths, resultCode);
     }
+
+
 
     private void requestUploadOfFilesFromFileSystem(String localBasePath, String[] filePaths, int resultCode) {
         if (localBasePath != null && filePaths != null) {

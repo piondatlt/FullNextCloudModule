@@ -498,8 +498,7 @@ public class OCFileListFragment extends ExtendedListFragment implements
 
         getActivity().startActivityForResult(
             Intent.createChooser(action, getString(R.string.upload_chooser_title)),
-            FileDisplayActivity.REQUEST_CODE__SELECT_CONTENT_FROM_APPS
-                                            );
+            FileDisplayActivity.REQUEST_CODE__SELECT_CONTENT_FROM_APPS);
     }
 
     @Override
@@ -540,8 +539,7 @@ public class OCFileListFragment extends ExtendedListFragment implements
             getActivity(),
             ((FileActivity) getActivity()).getUser().orElseThrow(RuntimeException::new),
             FileDisplayActivity.REQUEST_CODE__SELECT_FILES_FROM_FILE_SYSTEM,
-            getCurrentFile().isEncrypted()
-                                                        );
+            getCurrentFile().isEncrypted());
     }
 
     @Override

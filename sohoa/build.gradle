@@ -85,7 +85,7 @@ dependencies {
     androidTestImplementation 'androidx.test.espresso:espresso-core:3.3.0'
 
     implementation project(':commonRes')
-    implementation project(':cameraView')
+//    implementation project(':cameraView')
 
 
     // Crash recovery
@@ -163,5 +163,8 @@ dependencies {
     implementation 'com.github.barteksc:pdfium-android:1.9.0'
 
     implementation 'com.github.chrisbanes:PhotoView:2.3.0'
+
+    implementation 'com.otaliastudios:cameraview:2.7.2'
+
 
 }

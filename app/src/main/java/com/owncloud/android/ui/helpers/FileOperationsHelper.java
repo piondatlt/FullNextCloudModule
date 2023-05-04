@@ -1079,6 +1079,7 @@ public class FileOperationsHelper {
 
         Intent cameraIntent = new Intent(activity , MainActivity.class);
         activity.startActivityForResult(cameraIntent , requestCode);
+
 //
 //        File photoFile = createImageFile(activity);
 //

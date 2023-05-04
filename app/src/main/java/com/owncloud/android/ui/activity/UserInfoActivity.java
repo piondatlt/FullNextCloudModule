@@ -41,7 +41,6 @@ import android.webkit.URLUtil;
 import android.widget.ImageView;
 
 import com.bumptech.glide.Glide;
-import com.bumptech.glide.request.animation.GlideAnimation;
 import com.bumptech.glide.request.target.SimpleTarget;
 import com.nextcloud.client.account.User;
 import com.nextcloud.client.di.Injectable;
@@ -207,35 +206,9 @@ public class UserInfoActivity extends DrawerActivity implements Injectable {
 
                 if (URLUtil.isValidUrl(background)) {
                     // background image
-                    SimpleTarget target = new SimpleTarget<Drawable>() {
-                        @Override
-                        public void onResourceReady(Drawable resource, GlideAnimation glideAnimation) {
-                            Drawable[] drawables = {
-                                viewThemeUtils.platform.getPrimaryColorDrawable(backgroundImageView.getContext()),
-                                resource};
-                            LayerDrawable layerDrawable = new LayerDrawable(drawables);
-                            backgroundImageView.setImageDrawable(layerDrawable);
-                        }
 
-                        @Override
-                        public void onLoadFailed(Exception e, Drawable errorDrawable) {
-                            Drawable[] drawables = {
-                                viewThemeUtils.platform.getPrimaryColorDrawable(backgroundImageView.getContext()),
-                                ResourcesCompat.getDrawable(getResources(),
-                                                            R.drawable.background,
-                                                            null)};
-                            LayerDrawable layerDrawable = new LayerDrawable(drawables);
-                            backgroundImageView.setImageDrawable(layerDrawable);
-                        }
-                    };
 
-                    Glide.with(this)
-                            .load(background)
-                            .centerCrop()
-                            .placeholder(R.drawable.background)
-                            .error(R.drawable.background)
-                            .crossFade()
-                            .into(target);
+
                 } else {
                     // plain color
                     backgroundImageView.setImageDrawable(

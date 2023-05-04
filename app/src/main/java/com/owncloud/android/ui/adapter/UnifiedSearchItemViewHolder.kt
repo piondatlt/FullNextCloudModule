@@ -22,14 +22,11 @@
 package com.owncloud.android.ui.adapter
 
 import android.content.Context
-import android.graphics.Bitmap
 import android.graphics.drawable.Drawable
 import android.view.View
 import androidx.core.content.res.ResourcesCompat
 import com.afollestad.sectionedrecyclerview.SectionedViewHolder
 import com.bumptech.glide.Glide
-import com.bumptech.glide.request.RequestListener
-import com.bumptech.glide.request.target.Target
 import com.nextcloud.client.account.User
 import com.nextcloud.client.network.ClientFactory
 import com.owncloud.android.R
@@ -37,9 +34,7 @@ import com.owncloud.android.databinding.UnifiedSearchItemBinding
 import com.owncloud.android.datamodel.FileDataStorageManager
 import com.owncloud.android.lib.common.SearchResultEntry
 import com.owncloud.android.ui.interfaces.UnifiedSearchListInterface
-import com.owncloud.android.utils.BitmapUtils
 import com.owncloud.android.utils.MimeTypeUtil
-import com.owncloud.android.utils.glide.CustomGlideStreamLoader
 import com.owncloud.android.utils.theme.ViewThemeUtils
 
 @Suppress("LongParameterList")
@@ -68,13 +63,12 @@ class UnifiedSearchItemViewHolder(
 
         val placeholder = getPlaceholder(entry, mimetype)
 
-        Glide.with(context).using(CustomGlideStreamLoader(user, clientFactory))
-            .load(entry.thumbnailUrl)
+        Glide.with(context)
             .asBitmap()
+            .load(entry.thumbnailUrl)
             .placeholder(placeholder)
             .error(placeholder)
-            .animate(android.R.anim.fade_in)
-            .listener(RoundIfNeededListener(entry))
+
             .into(binding.thumbnail)
 
         binding.unifiedSearchItemLayout.setOnClickListener { listInterface.onSearchResultClicked(entry) }
@@ -101,30 +95,5 @@ class UnifiedSearchItemViewHolder(
             }
         }
         return viewThemeUtils.platform.tintPrimaryDrawable(context, drawable)!!
-    }
-
-    private inner class RoundIfNeededListener(private val entry: SearchResultEntry) :
-        RequestListener<String, Bitmap> {
-        override fun onException(
-            e: Exception?,
-            model: String?,
-            target: Target<Bitmap>?,
-            isFirstResource: Boolean
-        ): Boolean = false
-
-        override fun onResourceReady(
-            resource: Bitmap?,
-            model: String?,
-            target: Target<Bitmap>?,
-            isFromMemoryCache: Boolean,
-            isFirstResource: Boolean
-        ): Boolean {
-            if (entry.rounded) {
-                val drawable = BitmapUtils.bitmapToCircularBitmapDrawable(context.resources, resource)
-                binding.thumbnail.setImageDrawable(drawable)
-                return true
-            }
-            return false
-        }
     }
 }

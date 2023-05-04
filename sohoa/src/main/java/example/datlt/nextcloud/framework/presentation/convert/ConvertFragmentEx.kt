@@ -1,9 +1,10 @@
 package example.datlt.nextcloud.framework.presentation.convert
 
+import android.app.Activity
+import android.content.Intent
 import android.graphics.Bitmap
 import android.graphics.Matrix
 import android.graphics.pdf.PdfDocument
-import android.util.Log
 import android.widget.Toast
 import androidx.activity.addCallback
 import androidx.navigation.fragment.findNavController
@@ -14,10 +15,11 @@ import com.itextpdf.text.Image
 import com.itextpdf.text.PageSize
 import com.itextpdf.text.pdf.PdfWriter
 import example.datlt.nextcloud.R
-import example.datlt.nextcloud.util.*
-import example.datlt.nextcloud.util.Constant.TEMP_CAMERA
 import example.datlt.nextcloud.util.Constant.TEMP_COLOR
-import example.datlt.nextcloud.util.Constant.TEMP_CROP
+import example.datlt.nextcloud.util.createDocumentFile
+import example.datlt.nextcloud.util.getAllFileInFolder
+import example.datlt.nextcloud.util.setPreventDoubleClick
+import example.datlt.nextcloud.util.setPreventDoubleClickScaleView
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
@@ -68,7 +70,35 @@ fun ConvertFragment.nextEvent() {
             //sang màn tiếp theo
             withContext(Dispatchers.Main) {
                 Toast.makeText(context, "Convert Done", Toast.LENGTH_SHORT).show()
-                safeNav(R.id.convertFragment , ConvertFragmentDirections.actionConvertFragmentToReadFileFragment(pathFile))
+                //datlt sau khi convert xong
+                //back ve
+
+                // return the list of files (success)
+                val data = Intent()
+                data.putExtra("path", pathFile)
+                data.putExtra("basePath", File(pathFile).parent)
+                activity?.let {
+                    it.setResult(Activity.RESULT_OK , data)
+                    it.finish()
+                }
+
+
+                // activity?.let {
+                //     val i = it.intent
+                //     val resultData = Intent()
+                //     resultData.putExtra(EXTRA_FOLDER, listOfFilesFragment!!.currentFile)
+                //     val targetFiles = i.getParcelableArrayListExtra<Parcelable>(EXTRA_FILES)
+                //     if (targetFiles != null) {
+                //         resultData.putParcelableArrayListExtra(EXTRA_FILES, targetFiles)
+                //     }
+                //     mTargetFilePaths.let {
+                //         resultData.putStringArrayListExtra(EXTRA_FILE_PATHS, it)
+                //     }
+                //     it.setResult(RESULT_OK, resultData)
+                //     finish()
+                // }
+
+                // safeNav(R.id.convertFragment , ConvertFragmentDirections.actionConvertFragmentToReadFileFragment(pathFile))
             }
         }
 

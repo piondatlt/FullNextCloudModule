@@ -33,7 +33,6 @@ import android.widget.RemoteViewsService
 import com.bumptech.glide.Glide
 import com.bumptech.glide.load.engine.DiskCacheStrategy
 import com.bumptech.glide.load.model.StreamEncoder
-import com.bumptech.glide.load.resource.file.FileToStreamDecoder
 import com.bumptech.glide.request.FutureTarget
 import com.nextcloud.android.lib.resources.dashboard.DashboardGetWidgetItemsRemoteOperation
 import com.nextcloud.android.lib.resources.dashboard.DashboardWidgetItem
@@ -42,17 +41,10 @@ import com.nextcloud.client.network.ClientFactory
 import com.owncloud.android.R
 import com.owncloud.android.lib.common.utils.Log_OC
 import com.owncloud.android.utils.BitmapUtils
-import com.owncloud.android.utils.DisplayUtils.SVG_SIZE
-import com.owncloud.android.utils.glide.CustomGlideStreamLoader
-import com.owncloud.android.utils.glide.CustomGlideUriLoader
-import com.owncloud.android.utils.svg.SVGorImage
-import com.owncloud.android.utils.svg.SvgOrImageBitmapTranscoder
-import com.owncloud.android.utils.svg.SvgOrImageDecoder
 import dagger.android.AndroidInjection
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
-import java.io.InputStream
 import javax.inject.Inject
 
 class DashboardWidgetService : RemoteViewsService() {
@@ -170,35 +162,24 @@ class StackRemoteViewsFactory(
 
             // icon bitmap/svg
             if (widgetItem.iconUrl.isNotEmpty()) {
-                val glide: FutureTarget<Bitmap>
+                val glide: Bitmap
                 if (Uri.parse(widgetItem.iconUrl).encodedPath!!.endsWith(".svg")) {
                     glide = Glide.with(context)
-                        .using(
-                            CustomGlideUriLoader(userAccountManager.user, clientFactory),
-                            InputStream::class.java
-                        )
-                        .from(Uri::class.java)
-                        .`as`(SVGorImage::class.java)
-                        .transcode(SvgOrImageBitmapTranscoder(SVG_SIZE, SVG_SIZE), Bitmap::class.java)
-                        .sourceEncoder(StreamEncoder())
-                        .cacheDecoder(FileToStreamDecoder(SvgOrImageDecoder()))
-                        .decoder(SvgOrImageDecoder())
-                        .diskCacheStrategy(DiskCacheStrategy.SOURCE)
+                        .asBitmap()
                         .load(Uri.parse(widgetItem.iconUrl))
-                        .into(SVG_SIZE, SVG_SIZE)
+                        .submit().get()
                 } else {
                     glide = Glide.with(context)
-                        .using(CustomGlideStreamLoader(widgetConfiguration.user.get(), clientFactory))
-                        .load(widgetItem.iconUrl)
                         .asBitmap()
-                        .into(SVG_SIZE, SVG_SIZE)
+                        .load(widgetItem.iconUrl)
+                        .submit().get()
                 }
 
                 try {
                     if (widgetConfiguration.roundIcon) {
-                        setImageViewBitmap(R.id.icon, BitmapUtils.roundBitmap(glide.get()))
+                        setImageViewBitmap(R.id.icon, BitmapUtils.roundBitmap(glide))
                     } else {
-                        setImageViewBitmap(R.id.icon, glide.get())
+                        setImageViewBitmap(R.id.icon, glide)
                     }
                 } catch (e: Exception) {
                     Log_OC.d(TAG, "Error setting icon", e)

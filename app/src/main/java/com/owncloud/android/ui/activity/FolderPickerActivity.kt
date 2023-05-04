@@ -27,6 +27,7 @@ import android.content.IntentFilter
 import android.content.res.Resources
 import android.os.Bundle
 import android.os.Parcelable
+import android.util.Log
 import android.view.ActionMode
 import android.view.Menu
 import android.view.MenuItem
@@ -412,6 +413,7 @@ open class FolderPickerActivity :
                 resultData.putStringArrayListExtra(EXTRA_FILE_PATHS, it)
             }
             setResult(RESULT_OK, resultData)
+            Log.d("CHECKPATHFOLDER", "onClick: $EXTRA_FOLDER $EXTRA_FILES $EXTRA_FILE_PATHS")
             finish()
         }
     }
