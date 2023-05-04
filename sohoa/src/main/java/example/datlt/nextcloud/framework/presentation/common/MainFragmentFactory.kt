@@ -10,14 +10,12 @@ import javax.inject.Inject
 class MainFragmentFactory
 @Inject
 constructor(
-    private val prefUtil: PrefUtil,
-    private val glide: RequestManager
 ) : FragmentFactory() {
     override fun instantiate(classLoader: ClassLoader, className: String): Fragment {
 
         return when (className) {
             SplashFragment::class.java.name -> {
-                SplashFragment(glide)
+                SplashFragment()
             }
 
             else -> super.instantiate(classLoader, className)

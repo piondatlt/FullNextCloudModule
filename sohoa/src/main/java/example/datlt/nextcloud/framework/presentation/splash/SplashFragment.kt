@@ -8,9 +8,8 @@ import example.datlt.nextcloud.R
 import example.datlt.nextcloud.databinding.FragmentSplashBinding
 import example.datlt.nextcloud.framework.presentation.common.BaseFragment
 
-@AndroidEntryPoint
+
 class SplashFragment(
-    private val glide: RequestManager
 ) : BaseFragment<FragmentSplashBinding>(FragmentSplashBinding::inflate) {
 
     override fun init(view: View) {
