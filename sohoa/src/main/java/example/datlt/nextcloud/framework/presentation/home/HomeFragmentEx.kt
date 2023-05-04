@@ -7,17 +7,13 @@ import android.net.Uri
 import android.os.Build
 import android.os.Environment
 import android.provider.Settings
-import android.util.Log
 import android.widget.Toast
 import androidx.activity.addCallback
 import androidx.core.content.ContextCompat
-import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.LinearLayoutManager
 import example.datlt.nextcloud.BuildConfig
 import example.datlt.nextcloud.R
-import example.datlt.nextcloud.framework.presentation.crop.CropFragment
 import example.datlt.nextcloud.util.getAllCreatedFile
-import example.datlt.nextcloud.util.setPreventDoubleClick
 import example.datlt.nextcloud.util.setPreventDoubleClickScaleView
 import kotlin.system.exitProcess
 
@@ -51,7 +47,7 @@ fun HomeFragment.requestPermission() {
     if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.R) {
         val intent = Intent(
             Settings.ACTION_MANAGE_APP_ALL_FILES_ACCESS_PERMISSION,
-            Uri.parse("package:" + BuildConfig.APPLICATION_ID)
+            Uri.parse("package:" + BuildConfig.LIBRARY_PACKAGE_NAME)
         )
         try {
             resultRequestManageStoragePermission.launch(intent)

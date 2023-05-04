@@ -114,6 +114,7 @@ import androidx.annotation.Nullable;
 import androidx.core.content.FileProvider;
 import androidx.fragment.app.FragmentManager;
 import androidx.fragment.app.FragmentTransaction;
+import example.datlt.nextcloud.framework.MainActivity;
 
 /**
  * Helper implementation for file operations locally and remote.
@@ -1074,23 +1075,26 @@ public class FileOperationsHelper {
     }
 
     public void uploadFromCamera(Activity activity, int requestCode) {
-        Intent pictureIntent = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
 
-        File photoFile = createImageFile(activity);
 
-        Uri photoUri = FileProvider.getUriForFile(activity.getApplicationContext(),
-                                                  activity.getResources().getString(R.string.file_provider_authority), photoFile);
-        pictureIntent.putExtra(MediaStore.EXTRA_OUTPUT, photoUri);
-
-        if (pictureIntent.resolveActivity(activity.getPackageManager()) != null) {
-            if (PermissionUtil.checkSelfPermission(activity, Manifest.permission.CAMERA)) {
-                activity.startActivityForResult(pictureIntent, requestCode);
-            } else {
-                PermissionUtil.requestCameraPermission(activity, PermissionUtil.PERMISSIONS_CAMERA);
-            }
-        } else {
-            DisplayUtils.showSnackMessage(activity, "No Camera found");
-        }
+        Intent cameraIntent = new Intent(activity , MainActivity.class);
+        activity.startActivityForResult(cameraIntent , requestCode);
+//
+//        File photoFile = createImageFile(activity);
+//
+//        Uri photoUri = FileProvider.getUriForFile(activity.getApplicationContext(),
+//                                                  activity.getResources().getString(R.string.file_provider_authority), photoFile);
+//        pictureIntent.putExtra(MediaStore.EXTRA_OUTPUT, photoUri);
+//
+//        if (pictureIntent.resolveActivity(activity.getPackageManager()) != null) {
+//            if (PermissionUtil.checkSelfPermission(activity, Manifest.permission.CAMERA)) {
+//                activity.startActivityForResult(pictureIntent, requestCode);
+//            } else {
+//                PermissionUtil.requestCameraPermission(activity, PermissionUtil.PERMISSIONS_CAMERA);
+//            }
+//        } else {
+//            DisplayUtils.showSnackMessage(activity, "No Camera found");
+//        }
     }
 
     public static File createImageFile(Activity activity) {

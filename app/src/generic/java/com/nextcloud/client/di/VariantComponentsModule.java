@@ -21,6 +21,7 @@ package com.nextcloud.client.di;
 
 import dagger.Module;
 
+
 @Module
 abstract class VariantComponentsModule {
 }

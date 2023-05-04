@@ -11,9 +11,6 @@ import android.view.ViewGroup
 import androidx.lifecycle.Lifecycle
 import androidx.lifecycle.LifecycleEventObserver
 import androidx.recyclerview.widget.LinearLayoutManager
-import com.airbnb.epoxy.EpoxyController
-import com.airbnb.epoxy.EpoxyRecyclerView
-import example.datlt.nextcloud.EpoxyItemFolderPickerBindingModel_
 import example.datlt.nextcloud.R
 import example.datlt.nextcloud.databinding.DialogListFolderBinding
 
@@ -49,26 +46,6 @@ fun Context.showDialogPickFolder(
     binding.apply {
         //init recyclerview
         rcvFolder.layoutManager = LinearLayoutManager(this@showDialogPickFolder)
-        rcvFolder.buildModelsWith(object : EpoxyRecyclerView.ModelBuilderCallback {
-            override fun buildModels(controller: EpoxyController) {
-                for (item in listFolder) {
-                    controller.add(
-                        EpoxyItemFolderPickerBindingModel_()
-                            .id(item)
-                            .isSelected(item == folderIsChoose)
-                            .onClickItem {
-                                dialog.dismiss()
-                                onClickFolder.invoke(item)
-                            }
-                    )
-                }
-            }
-        })
-        rcvFolder.requestModelBuild()
-        btnCancel.setPreventDoubleClick {
-            dialog.dismiss()
-            onCancel.invoke()
-        }
 
 
     }
