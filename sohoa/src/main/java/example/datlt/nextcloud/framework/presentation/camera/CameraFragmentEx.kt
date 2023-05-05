@@ -29,7 +29,7 @@ fun CameraFragment.backEvent() {
 }
 
 fun CameraFragment.onBackPressed() {
-    findNavController().popBackStack()
+    activity?.finish()
 }
 
 fun CameraFragment.initCamera(){

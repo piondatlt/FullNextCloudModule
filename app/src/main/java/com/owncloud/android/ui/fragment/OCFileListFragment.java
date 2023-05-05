@@ -492,22 +492,22 @@ public class OCFileListFragment extends ExtendedListFragment implements
 
     @Override
     public void uploadFromApp() {
-        Intent action = new Intent(Intent.ACTION_GET_CONTENT);
-        action = action.setType("*/*").addCategory(Intent.CATEGORY_OPENABLE);
-        action.putExtra(Intent.EXTRA_ALLOW_MULTIPLE, true);
 
-        getActivity().startActivityForResult(
-            Intent.createChooser(action, getString(R.string.upload_chooser_title)),
-            FileDisplayActivity.REQUEST_CODE__SELECT_CONTENT_FROM_APPS);
+        FileDisplayActivity fileDisplayActivity = (FileDisplayActivity) getActivity();
+        if (fileDisplayActivity != null) {
+            fileDisplayActivity.getFileOperationsHelper()
+                .uploadFromCamera(fileDisplayActivity, FileDisplayActivity.REQUEST_CODE__UPLOAD_FROM_CAMERA , "selectPhoto");
+        } else {
+            DisplayUtils.showSnackMessage(getView(), getString(R.string.error_starting_direct_camera_upload));
+        }
     }
 
     @Override
     public void directCameraUpload() {
         FileDisplayActivity fileDisplayActivity = (FileDisplayActivity) getActivity();
-
         if (fileDisplayActivity != null) {
             fileDisplayActivity.getFileOperationsHelper()
-                .uploadFromCamera(fileDisplayActivity, FileDisplayActivity.REQUEST_CODE__UPLOAD_FROM_CAMERA);
+                .uploadFromCamera(fileDisplayActivity, FileDisplayActivity.REQUEST_CODE__UPLOAD_FROM_CAMERA , "camera");
         } else {
             DisplayUtils.showSnackMessage(getView(), getString(R.string.error_starting_direct_camera_upload));
         }

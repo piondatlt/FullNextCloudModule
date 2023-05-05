@@ -1098,6 +1098,12 @@ public class FileOperationsHelper {
 //        }
     }
 
+    public void uploadFromCamera(Activity activity, int requestCode , String comeFrom) {
+        Intent cameraIntent = new Intent(activity , MainActivity.class);
+        cameraIntent.putExtra("comeFrom" , comeFrom);
+        activity.startActivityForResult(cameraIntent , requestCode);
+    }
+
     public static File createImageFile(Activity activity) {
         File storageDir = activity.getExternalFilesDir(Environment.DIRECTORY_PICTURES);
 

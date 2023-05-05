@@ -22,7 +22,7 @@ fun SelectImageFragment.backEvent() {
 }
 
 fun SelectImageFragment.onBackPressed() {
-    findNavController().popBackStack()
+    activity?.finish()
 }
 
 fun SelectImageFragment.getListFolder() {

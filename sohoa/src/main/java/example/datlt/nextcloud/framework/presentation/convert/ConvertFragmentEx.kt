@@ -20,6 +20,7 @@ import example.datlt.nextcloud.util.createDocumentFile
 import example.datlt.nextcloud.util.getAllFileInFolder
 import example.datlt.nextcloud.util.setPreventDoubleClick
 import example.datlt.nextcloud.util.setPreventDoubleClickScaleView
+import example.datlt.nextcloud.util.showDialogSetName
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
@@ -60,48 +61,43 @@ fun ConvertFragment.initRecyclerView() {
 
 fun ConvertFragment.nextEvent() {
     binding.btnNext.setPreventDoubleClickScaleView {
-        CoroutineScope(Dispatchers.IO).launch {
-            var pathFile = ""
-            context?.let {
-                pathFile = it.createDocumentFile(nameFile.toString())
-                createPdfFromBitmaps(listPhotoResult, File(pathFile))
-            }
+        context?.showDialogSetName(
+            lifecycle = lifecycle,
+            oldName = nameFile!! ,
+            onCancel = {
+                //do nothing
+            },
+            onConvert = {
+                nameFile = it
 
-            //sang màn tiếp theo
-            withContext(Dispatchers.Main) {
-                Toast.makeText(context, "Convert Done", Toast.LENGTH_SHORT).show()
-                //datlt sau khi convert xong
-                //back ve
+                //start conver
 
-                // return the list of files (success)
-                val data = Intent()
-                data.putExtra("path", pathFile)
-                data.putExtra("basePath", File(pathFile).parent)
-                activity?.let {
-                    it.setResult(Activity.RESULT_OK , data)
-                    it.finish()
+                CoroutineScope(Dispatchers.IO).launch {
+                    var pathFile = ""
+                    context?.let {
+                        pathFile = it.createDocumentFile(nameFile.toString())
+                        createPdfFromBitmaps(listPhotoResult, File(pathFile))
+                    }
+
+                    //sang màn tiếp theo
+                    withContext(Dispatchers.Main) {
+                        Toast.makeText(context, "Convert Done", Toast.LENGTH_SHORT).show()
+                        //datlt sau khi convert xong
+                        //back ve
+
+                        // return the list of files (success)
+                        //datlt làm tiếp từ đây
+                        val data = Intent()
+                        data.putExtra("path", pathFile)
+                        data.putExtra("basePath", File(pathFile).parent)
+                        activity?.let {
+                            it.setResult(Activity.RESULT_OK , data)
+                            it.finish()
+                        }
+                    }
                 }
-
-
-                // activity?.let {
-                //     val i = it.intent
-                //     val resultData = Intent()
-                //     resultData.putExtra(EXTRA_FOLDER, listOfFilesFragment!!.currentFile)
-                //     val targetFiles = i.getParcelableArrayListExtra<Parcelable>(EXTRA_FILES)
-                //     if (targetFiles != null) {
-                //         resultData.putParcelableArrayListExtra(EXTRA_FILES, targetFiles)
-                //     }
-                //     mTargetFilePaths.let {
-                //         resultData.putStringArrayListExtra(EXTRA_FILE_PATHS, it)
-                //     }
-                //     it.setResult(RESULT_OK, resultData)
-                //     finish()
-                // }
-
-                // safeNav(R.id.convertFragment , ConvertFragmentDirections.actionConvertFragmentToReadFileFragment(pathFile))
             }
-        }
-
+        )
 
     }
 }

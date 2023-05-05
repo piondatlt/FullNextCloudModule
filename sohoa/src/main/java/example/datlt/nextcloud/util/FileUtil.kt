@@ -180,8 +180,7 @@ fun Context.getAllCreatedFile(): List<String> {
 }
 
 fun Context.createDocumentFile(nameFile: String): String {
-    val pathFolder =
-        "${Environment.getExternalStorageDirectory().absoluteFile}/${Environment.DIRECTORY_DOCUMENTS}/$FOLDER_NAME"
+    val pathFolder = "${Environment.getExternalStorageDirectory().absoluteFile}/${Environment.DIRECTORY_DOCUMENTS}/$FOLDER_NAME"
 
     if (!File(pathFolder).exists()) {
         File(pathFolder).mkdirs()
@@ -201,8 +200,4 @@ fun Context.createDocumentFile(nameFile: String): String {
     }
     return ""
 
-    //định hướng cụ thể về chuyên ngành digital marketing
-    //trình bày một cách ngắn gọi các bước để lập ra một kế hoạch mkt -> sau đó đi vào trình bày cụ thê
-
-//    checkl the new cuurent he
 }

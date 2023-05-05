@@ -795,8 +795,8 @@
     <string name="updating_share_failed">Cập nhật chia sẻ không thành công</string>
     <string name="upload_cannot_create_file">Không thể tạo tệp trên máy</string>
     <string name="upload_chooser_title">Tải lên từ…</string>
-    <string name="upload_content_from_other_apps">Tải lên từ các ứng dụng khác</string>
-    <string name="upload_direct_camera_upload">Tải lên từ máy ảnh</string>
+    <string name="upload_content_from_other_apps">Chọn ảnh</string>
+    <string name="upload_direct_camera_upload">Scan bằng camera</string>
     <string name="upload_file_dialog_filename">Tên tập tin</string>
     <string name="upload_file_dialog_filetype">Định dạng</string>
     <string name="upload_file_dialog_filetype_googlemap_shortcut">Tệp phím tắt Google Maps(%s)</string>

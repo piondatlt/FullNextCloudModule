@@ -19,5 +19,8 @@
     <string name="view_pdf">View PDF</string>
     <string name="camera">Camera</string>
     <string name="image_preview">Image Preview</string>
+    <string name="rename">Rename</string>
+    <string name="cancel">Cancel</string>
+    <string name="name_your_file">Name your file</string>
 
 </resources>

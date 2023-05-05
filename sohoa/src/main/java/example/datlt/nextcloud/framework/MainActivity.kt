@@ -1,10 +1,11 @@
 package example.datlt.nextcloud.framework
 
 import android.os.Bundle
+import android.util.Log
 import android.view.WindowManager
 import androidx.appcompat.app.AppCompatActivity
+import androidx.navigation.fragment.NavHostFragment
 import example.datlt.nextcloud.R
-
 
 class MainActivity : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -15,5 +16,17 @@ class MainActivity : AppCompatActivity() {
         )
         setContentView(R.layout.activity_main) //TODO: change name navhost
 
+        val navHostFragment =
+            supportFragmentManager.findFragmentById(R.id.fragmentContainerMain) as NavHostFragment
+        val navController = navHostFragment.navController
+
+        if (intent.getStringExtra("comeFrom") == "camera") {
+            navController.navigate(R.id.cameraFragment)
+        } else {
+            navController.navigate(R.id.selectImageFragment)
+        }
     }
+
+
+
 }
