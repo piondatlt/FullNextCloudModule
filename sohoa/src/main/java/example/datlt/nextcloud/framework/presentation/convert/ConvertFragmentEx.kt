@@ -5,6 +5,7 @@ import android.content.Intent
 import android.graphics.Bitmap
 import android.graphics.Matrix
 import android.graphics.pdf.PdfDocument
+import android.util.Log
 import android.widget.Toast
 import androidx.activity.addCallback
 import androidx.navigation.fragment.findNavController
@@ -15,11 +16,13 @@ import com.itextpdf.text.Image
 import com.itextpdf.text.PageSize
 import com.itextpdf.text.pdf.PdfWriter
 import example.datlt.nextcloud.R
+import example.datlt.nextcloud.framework.MainActivity
 import example.datlt.nextcloud.util.Constant.TEMP_COLOR
 import example.datlt.nextcloud.util.createDocumentFile
 import example.datlt.nextcloud.util.getAllFileInFolder
 import example.datlt.nextcloud.util.setPreventDoubleClick
 import example.datlt.nextcloud.util.setPreventDoubleClickScaleView
+import example.datlt.nextcloud.util.showDialogRemoveAction
 import example.datlt.nextcloud.util.showDialogSetName
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
@@ -39,7 +42,17 @@ fun ConvertFragment.backEvent() {
 }
 
 fun ConvertFragment.onBackPressed() {
-    findNavController().popBackStack(R.id.selectImageFragment, false)
+    context?.showDialogRemoveAction(
+        lifecycle = lifecycle,
+        onCancel = {},
+        onRemove = {
+            if (MainActivity.isSelectPhotoThread){
+                findNavController().popBackStack(R.id.selectImageFragment, false)
+            }else{
+                findNavController().popBackStack(R.id.cameraFragment, false)
+            }
+        }
+    )
 }
 
 fun ConvertFragment.getAllColoredPhoto() {
@@ -56,14 +69,13 @@ fun ConvertFragment.initRecyclerView() {
     binding.rcvResultImage.layoutManager = LinearLayoutManager(context)
     binding.rcvResultImage.adapter = adapter
     adapter.submitList(listPhotoResult)
-
 }
 
 fun ConvertFragment.nextEvent() {
     binding.btnNext.setPreventDoubleClickScaleView {
         context?.showDialogSetName(
             lifecycle = lifecycle,
-            oldName = nameFile!! ,
+            oldName = nameFile!!,
             onCancel = {
                 //do nothing
             },
@@ -84,16 +96,12 @@ fun ConvertFragment.nextEvent() {
                         Toast.makeText(context, "Convert Done", Toast.LENGTH_SHORT).show()
                         //datlt sau khi convert xong
                         //back ve
-
                         // return the list of files (success)
-                        //datlt làm tiếp từ đây
-                        val data = Intent()
-                        data.putExtra("path", pathFile)
-                        data.putExtra("basePath", File(pathFile).parent)
-                        activity?.let {
-                            it.setResult(Activity.RESULT_OK , data)
-                            it.finish()
-                        }
+
+                        safeNav(
+                            R.id.convertFragment,
+                            ConvertFragmentDirections.actionConvertFragmentToReadFileFragment(filePath = pathFile)
+                        )
                     }
                 }
             }
@@ -132,7 +140,6 @@ fun ConvertFragment.createPdfFromBitmaps(images: List<String>, outputFile: File)
     val doc = Document(PageSize.A4)
     PdfWriter.getInstance(doc, FileOutputStream(outputFile))
     doc.open()
-
 
     val fixWidth = 400
 

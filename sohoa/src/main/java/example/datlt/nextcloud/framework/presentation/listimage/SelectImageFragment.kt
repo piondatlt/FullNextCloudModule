@@ -3,9 +3,13 @@ package example.datlt.nextcloud.framework.presentation.listimage
 import android.view.View
 import example.datlt.nextcloud.database.entities.Photo
 import example.datlt.nextcloud.databinding.FragmentSelectImageBinding
+import example.datlt.nextcloud.framework.presentation.color.SetColorFragment.Companion.listGPUIFilter
 import example.datlt.nextcloud.framework.presentation.common.BaseFragment
+import example.datlt.nextcloud.framework.presentation.crop.CropFragment.Companion.listStatePhoto
 import example.datlt.nextcloud.framework.presentation.listimage.adapter.PhotoAdapter
+import example.datlt.nextcloud.util.Constant
 import example.datlt.nextcloud.util.ListFileUtils
+import example.datlt.nextcloud.util.removeTempFile
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
@@ -28,6 +32,13 @@ class SelectImageFragment :
     })
 
     override fun init(view: View) {
+
+        context?.let {
+            it.removeTempFile(Constant.TEMP_CROP)
+            it.removeTempFile(Constant.TEMP_COLOR)
+            listStatePhoto.clear()
+            listGPUIFilter.clear()
+        }
 
         if (listSelectedPhoto.size > 0) {
             binding.btnNext.text = "Next (${listSelectedPhoto.size})"

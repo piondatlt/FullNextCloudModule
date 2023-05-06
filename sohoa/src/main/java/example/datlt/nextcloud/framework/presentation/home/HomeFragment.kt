@@ -5,6 +5,7 @@ import android.view.View
 import androidx.activity.result.contract.ActivityResultContracts
 import example.datlt.nextcloud.R
 import example.datlt.nextcloud.databinding.FragmentHomeBinding
+import example.datlt.nextcloud.framework.presentation.color.SetColorFragment
 import example.datlt.nextcloud.framework.presentation.common.BaseFragment
 import example.datlt.nextcloud.framework.presentation.crop.CropFragment
 import example.datlt.nextcloud.framework.presentation.home.adapter.ItemCreatedAdapter
@@ -26,14 +27,6 @@ class HomeFragment : BaseFragment<FragmentHomeBinding>(FragmentHomeBinding::infl
     }
 
     override fun init(view: View) {
-
-        //reset all temp folder
-        context?.let {
-            it.removeTempFile(TEMP_CAMERA)
-            it.removeTempFile(TEMP_CROP)
-            it.removeTempFile(TEMP_COLOR)
-            CropFragment.listStatePhoto.clear()
-        }
 
         backEvent()
 

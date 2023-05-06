@@ -17,7 +17,7 @@ class ConvertFragment : BaseFragment<FragmentConvertBinding>(FragmentConvertBind
 
     override fun init(view: View) {
         if (nameFile == null){
-            nameFile ="Sync_Next_Cloud_${System.currentTimeMillis()}"
+            nameFile ="Convert_${System.currentTimeMillis()}"
         }
         backEvent()
         getAllColoredPhoto()

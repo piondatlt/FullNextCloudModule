@@ -21,10 +21,17 @@ class MainActivity : AppCompatActivity() {
         val navController = navHostFragment.navController
 
         if (intent.getStringExtra("comeFrom") == "camera") {
+            isSelectPhotoThread = false
             navController.navigate(R.id.cameraFragment)
         } else {
+            isSelectPhotoThread = true
             navController.navigate(R.id.selectImageFragment)
         }
+    }
+
+    companion object{
+        var isSelectPhotoThread = true
+        var isRemoveAllAction = true
     }
 
 

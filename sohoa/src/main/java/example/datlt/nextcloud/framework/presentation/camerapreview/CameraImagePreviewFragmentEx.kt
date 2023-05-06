@@ -20,7 +20,7 @@ fun CameraImagePreviewFragment.backEvent() {
 }
 
 fun CameraImagePreviewFragment.onBackPressed() {
-    findNavController().popBackStack(R.id.homeFragment , false)
+    findNavController().popBackStack()
 }
 
 fun CameraImagePreviewFragment.nextEvent(){

@@ -17,6 +17,7 @@ import com.itextpdf.text.Document
 import com.itextpdf.text.Image
 import com.itextpdf.text.pdf.PdfWriter
 import example.datlt.nextcloud.R
+import example.datlt.nextcloud.framework.MainActivity
 import example.datlt.nextcloud.framework.presentation.color.SetColorFragment.Companion.listGPUIFilter
 import example.datlt.nextcloud.framework.presentation.color.adapter.ItemColorAdapter
 import example.datlt.nextcloud.framework.presentation.crop.CropFragment.Companion.listStatePhoto
@@ -49,7 +50,17 @@ fun SetColorFragment.backEvent() {
 }
 
 fun SetColorFragment.onBackPressed() {
-    findNavController().popBackStack(R.id.selectImageFragment, false)
+    context?.showDialogRemoveAction(
+        lifecycle = lifecycle,
+        onCancel = {},
+        onRemove = {
+            if (MainActivity.isSelectPhotoThread){
+                findNavController().popBackStack(R.id.selectImageFragment, false)
+            }else{
+                findNavController().popBackStack(R.id.cameraFragment, false)
+            }
+        }
+    )
 }
 
 fun SetColorFragment.getAllFileCropped() {

@@ -21,7 +21,7 @@
             android:id="@+id/title"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="@string/name_your_file"
+            android:text="@string/remove_action"
             android:textSize="@dimen/text_size_18"
             android:textColor="@color/black"
             android:layout_margin="@dimen/_16dp"
@@ -29,11 +29,14 @@
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent" />
 
-        <EditText
+        <TextView
             android:id="@+id/edtRename"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:background="@drawable/bg_radius_14_black_stroke"
+            android:text="@string/this_action_will_remove_the_file_you_are_creating_and_all_action_before"
+            android:textSize="@dimen/text_size_16"
+            android:textColor="@color/black"
+            android:fontFamily="@font/quicksand_500"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
             android:layout_margin="@dimen/_16dp"
@@ -52,11 +55,11 @@
             app:layout_constraintDimensionRatio="360:50">
 
             <TextView
-                android:id="@+id/btnConvert"
+                android:id="@+id/btnRemove"
                 android:layout_weight="1"
                 android:layout_width="0dp"
                 android:layout_height="match_parent"
-                android:text="@string/convert"
+                android:text="@string/remove"
                 android:textColor="@color/black"
                 android:textSize="@dimen/text_size_18"
                 android:layout_gravity="center"

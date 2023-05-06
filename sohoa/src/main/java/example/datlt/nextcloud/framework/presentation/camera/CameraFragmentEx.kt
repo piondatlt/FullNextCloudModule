@@ -94,3 +94,29 @@ fun CameraFragment.onTakePictureSuccess(result : PictureResult){
         }
     }
 }
+
+fun CameraFragment.nextEvent(){
+    context?.let {
+        val tempFile = TEMP_CAMERA
+        val pathFolder = "${it.filesDir.path}/$tempFile"
+        val folder = File(pathFolder)
+
+        if (folder.exists()){
+            val listFile = folder.list()
+            if (listFile.isNullOrEmpty()){
+                binding.btnNext.text = "${getString(R.string.next)} (0)"
+            }else{
+                binding.btnNext.text = "${getString(R.string.next)} (${listFile.size})"
+            }
+
+        }else{
+            binding.btnNext.text = "${getString(R.string.next)} (0)"
+        }
+
+        binding.btnNext.setPreventDoubleClickScaleView {
+            //datlt lam tiep tu day
+        }
+
+
+    }
+}

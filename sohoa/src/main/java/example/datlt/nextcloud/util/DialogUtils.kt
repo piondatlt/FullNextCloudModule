@@ -14,7 +14,10 @@ import androidx.lifecycle.LifecycleEventObserver
 import androidx.recyclerview.widget.LinearLayoutManager
 import example.datlt.nextcloud.R
 import example.datlt.nextcloud.databinding.DialogListFolderBinding
+import example.datlt.nextcloud.databinding.DialogRemoveAllActionBinding
 import example.datlt.nextcloud.databinding.DialogRenameBinding
+import example.datlt.nextcloud.databinding.DialogUploadToCloudBinding
+import example.datlt.nextcloud.framework.MainActivity
 
 fun Context.showDialogPickFolder(
     lifecycle: Lifecycle,
@@ -86,6 +89,7 @@ fun Context.showDialogSetName(
     val binding = DialogRenameBinding.bind(view)
 
     binding.apply {
+        edtRename.setText(currentName)
         //init recyclerview
         btnCancel.setPreventDoubleClickScaleView {
             dialog.dismiss()
@@ -99,14 +103,102 @@ fun Context.showDialogSetName(
                 currentName = edtRename.text.toString()
             }
 
-
-            if (currentName.matches(Regex(".*\\.pdf$")) || currentName.matches(Regex(".*\\.PDF$"))) {
+            val regex = Regex("[^a-zA-Z0-9_\\sđĐàáảãạăắằẵẳặâấầẩẫậéèẽẻẹêếềểễệíìỉĩịóòỏõọôốồổỗộơớờởỡợúùủũụưứừửữựýỳỷỹỵ]+")
+            if (!regex.containsMatchIn(currentName)) {
                 // Tên file hợp lệ
                 onConvert.invoke(currentName)
             } else {
                 // Tên file không hợp lệ
                 Toast.makeText(this@showDialogSetName , "Name wrong format" , Toast.LENGTH_SHORT).show()
             }
+        }
+
+    }
+    if (!dialog.isShowing) {
+        dialog.show()
+    }
+}
+
+
+fun Context.showDialogUploadToNextCloud(
+    lifecycle: Lifecycle,
+    onUpload : () -> Unit,
+    onCancel : () -> Unit,
+) {
+
+    val dialog = Dialog(this)
+    val view: View = LayoutInflater.from(this).inflate(R.layout.dialog_upload_to_cloud, null)
+    dialog.setContentView(view)
+    dialog.setCancelable(false)
+    dialog.window?.setGravity(Gravity.CENTER)
+    dialog.window?.setLayout(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.MATCH_PARENT)
+    dialog.window?.setBackgroundDrawable(ColorDrawable(Color.TRANSPARENT))
+    lifecycle.addObserver(LifecycleEventObserver { _, event ->
+        when (event) {
+            Lifecycle.Event.ON_PAUSE -> {
+                dialog.dismiss()
+            }
+            else -> {
+
+            }
+        }
+    })
+    val binding = DialogUploadToCloudBinding.bind(view)
+
+    binding.apply {
+        //init recyclerview
+        btnCancel.setPreventDoubleClickScaleView {
+            dialog.dismiss()
+            onCancel.invoke()
+        }
+
+        btnConvert.setPreventDoubleClickScaleView {
+            dialog.dismiss()
+            onUpload.invoke()
+        }
+
+    }
+    if (!dialog.isShowing) {
+        dialog.show()
+    }
+}
+
+fun Context.showDialogRemoveAction(
+    lifecycle: Lifecycle,
+    onRemove : () -> Unit,
+    onCancel : () -> Unit,
+) {
+
+    val dialog = Dialog(this)
+    val view: View = LayoutInflater.from(this).inflate(R.layout.dialog_remove_all_action, null)
+    dialog.setContentView(view)
+    dialog.setCancelable(false)
+    dialog.window?.setGravity(Gravity.CENTER)
+    dialog.window?.setLayout(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.MATCH_PARENT)
+    dialog.window?.setBackgroundDrawable(ColorDrawable(Color.TRANSPARENT))
+    lifecycle.addObserver(LifecycleEventObserver { _, event ->
+        when (event) {
+            Lifecycle.Event.ON_PAUSE -> {
+                dialog.dismiss()
+            }
+            else -> {
+
+            }
+        }
+    })
+    val binding = DialogRemoveAllActionBinding.bind(view)
+
+    binding.apply {
+        //init recyclerview
+        btnCancel.setPreventDoubleClickScaleView {
+            dialog.dismiss()
+            onCancel.invoke()
+        }
+
+        btnRemove.setPreventDoubleClickScaleView {
+            dialog.dismiss()
+            MainActivity.isRemoveAllAction = true
+            onRemove.invoke()
         }
 
     }

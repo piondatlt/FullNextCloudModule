@@ -22,5 +22,13 @@
     <string name="rename">Rename</string>
     <string name="cancel">Cancel</string>
     <string name="name_your_file">Name your file</string>
+    <string name="start_convert">Start convert</string>
+    <string name="result_pdf">Result PDF</string>
+    <string name="up_load_to_cloud">Up load to cloud</string>
+    <string name="do_you_wanna_upload_this_file_to_next_cloud">Do you wanna upload this file to next cloud ?</string>
+    <string name="remove_action">Remove action</string>
+    <string name="this_action_will_remove_the_file_you_are_creating_and_all_action_before">This action will remove the file you are creating and all action before</string>
+    <string name="upload">Upload</string>
+    <string name="remove">Remove</string>
 
 </resources>

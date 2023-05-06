@@ -10,6 +10,7 @@ import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.LinearSnapHelper
 import example.datlt.nextcloud.R
 import example.datlt.nextcloud.database.entities.Photo
+import example.datlt.nextcloud.framework.MainActivity.Companion.isSelectPhotoThread
 import example.datlt.nextcloud.framework.presentation.crop.CropFragment.Companion.listStatePhoto
 import example.datlt.nextcloud.framework.presentation.crop.adapter.ItemCropAdapter
 import example.datlt.nextcloud.framework.presentation.crop.adapter.SnapHelperOneByOne
@@ -32,12 +33,17 @@ fun CropFragment.backEvent() {
 
 fun CropFragment.onBackPressed() {
 
-    if (findNavController().previousBackStackEntry?.destination?.id == R.id.cameraFragment ||
-        findNavController().previousBackStackEntry?.destination?.id == R.id.cameraImagePreviewFragment){
-        findNavController().popBackStack(R.id.homeFragment, false)
-    }else{
-        findNavController().popBackStack(R.id.selectImageFragment, false)
-    }
+    context?.showDialogRemoveAction(
+        lifecycle = lifecycle,
+        onCancel = {},
+        onRemove = {
+            if (isSelectPhotoThread){
+                findNavController().popBackStack(R.id.selectImageFragment, false)
+            }else{
+                findNavController().popBackStack(R.id.cameraFragment, false)
+            }
+        }
+    )
 
 }
 
