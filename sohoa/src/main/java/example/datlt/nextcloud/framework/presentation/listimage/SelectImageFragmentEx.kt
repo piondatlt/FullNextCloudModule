@@ -8,6 +8,7 @@ import example.datlt.nextcloud.R
 import example.datlt.nextcloud.database.entities.Photo
 import example.datlt.nextcloud.framework.presentation.crop.CropFragment.Companion.listStatePhoto
 import example.datlt.nextcloud.util.setPreventDoubleClickScaleView
+import example.datlt.nextcloud.util.showDialogPickFolder
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
@@ -27,6 +28,7 @@ fun SelectImageFragment.onBackPressed() {
 
 fun SelectImageFragment.getListFolder() {
     listFolderPhoto.clear()
+    listFolderPhoto.add(getString(R.string.all_photo))
     for (item in listAllPhoto) {
         if (!listFolderPhoto.contains(item.nameFolder)) {
             listFolderPhoto.add(item.nameFolder)
@@ -42,7 +44,7 @@ fun SelectImageFragment.initRecyclerView() {
 
 fun SelectImageFragment.setListToAdapter() {
     CoroutineScope(Dispatchers.Main).launch {
-        adapter.submitList(listPhotoDisplay)
+        filterImage()
     }
 }
 
@@ -139,4 +141,84 @@ fun SelectImageFragment.nextEvent() {
         }
     }
 
+}
+
+fun SelectImageFragment.selectFolderEvent(){
+    binding.btnChooseFolder.setPreventDoubleClickScaleView {
+        context?.showDialogPickFolder(
+            lifecycle = lifecycle,
+            listFolder = listFolderPhoto,
+            folderIsChoose = currentSelected,
+            onCancel = {
+                //do nothing
+            },
+            onClickFolder = {
+                currentSelected = it
+                binding.txvNameFolder.text = it
+                //filter file
+                filterImage()
+            }
+        )
+    }
+}
+
+fun SelectImageFragment.filterImage(){
+    listPhotoDisplay.clear()
+
+    for (item in listAllPhoto){
+        if (currentSelected == getString(R.string.all_photo)){
+            var isSelected = false
+            var chosenNumber = 0
+            for (selectedItem in listSelectedPhoto){
+                if (selectedItem.id == item.id){
+                    isSelected = true
+                    chosenNumber = selectedItem.numberWhenChoose
+                    break
+                }
+            }
+
+            val newItem = Photo(
+                id = item.id,
+                name = item.name,
+                nameFolder = item.nameFolder,
+                path = item.path,
+                pathFolder = item.pathFolder,
+                typeMedia = item.typeMedia,
+                isSelect = isSelected,
+                numberWhenChoose = chosenNumber
+            )
+            listPhotoDisplay.add(newItem)
+        }else{
+            if (item.nameFolder == currentSelected){
+                var isSelected = false
+                var chosenNumber = 0
+                for (selectedItem in listSelectedPhoto){
+                    if (selectedItem.id == item.id){
+                        isSelected = true
+                        chosenNumber = selectedItem.numberWhenChoose
+                        break
+                    }
+                }
+
+                val newItem = Photo(
+                    id = item.id,
+                    name = item.name,
+                    nameFolder = item.nameFolder,
+                    path = item.path,
+                    pathFolder = item.pathFolder,
+                    typeMedia = item.typeMedia,
+                    isSelect = isSelected,
+                    numberWhenChoose = chosenNumber
+                )
+                listPhotoDisplay.add(newItem)
+            }
+        }
+
+    }
+
+
+    val newList = mutableListOf<Photo>()
+    newList.addAll(listPhotoDisplay)
+    adapter.submitList(newList)
+    binding.rcvListPhoto.scrollToPosition(0)
 }

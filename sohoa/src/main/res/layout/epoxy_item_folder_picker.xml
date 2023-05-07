@@ -11,9 +11,6 @@
             name="isSelected"
             type="Boolean" />
 
-        <variable
-            name="onClickItem"
-            type="Runnable" />
 
     </data>
 
@@ -48,7 +45,7 @@
                 tools:textColor="#0047D1" />
 
             <ImageView
-                android:id="@+id/isSelect"
+                android:id="@+id/txvIsSelected"
                 android:layout_width="@dimen/_24dp"
                 android:layout_height="@dimen/_24dp"
                 android:layout_gravity="center_vertical"

@@ -86,7 +86,7 @@
             android:layout_height="wrap_content"
             android:layout_marginStart="@dimen/_8dp"
             android:fontFamily="@font/quicksand_700"
-            android:text="All Photo"
+            android:text="@string/all_photo"
             android:textSize="@dimen/text_size_18" />
 
     </LinearLayout>

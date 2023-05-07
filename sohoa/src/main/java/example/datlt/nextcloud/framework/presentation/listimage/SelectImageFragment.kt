@@ -1,6 +1,7 @@
 package example.datlt.nextcloud.framework.presentation.listimage
 
 import android.view.View
+import example.datlt.nextcloud.R
 import example.datlt.nextcloud.database.entities.Photo
 import example.datlt.nextcloud.databinding.FragmentSelectImageBinding
 import example.datlt.nextcloud.framework.presentation.color.SetColorFragment.Companion.listGPUIFilter
@@ -27,12 +28,18 @@ class SelectImageFragment :
 
     val listSelectedPhoto = mutableListOf<Photo>() //list photo duoc chon
 
+    var currentSelected = ""
+
     val adapter = PhotoAdapter(onClickItem = {
         //click item
         clickItem(it)
     })
 
     override fun init(view: View) {
+
+        if (currentSelected.isEmpty()){
+            currentSelected = getString(R.string.all_photo)
+        }
 
         context?.let {
             it.removeTempFile(Constant.TEMP_CROP)
@@ -53,6 +60,7 @@ class SelectImageFragment :
         //init adapter
         initRecyclerView()
         nextEvent()
+        selectFolderEvent()
     }
 
     override fun subscribeObserver(view: View) {
@@ -64,7 +72,6 @@ class SelectImageFragment :
                         listAllPhoto.clear()
                         listPhotoDisplay.clear()
                         listAllPhoto.addAll(it)
-                        listPhotoDisplay.addAll(listAllPhoto)
                         setListToAdapter()
                         getListFolder()
                     }
