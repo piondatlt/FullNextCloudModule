@@ -85,6 +85,7 @@ android {
         exclude("META-INF/notice.txt")
         exclude("META-INF/ASL2.0")
         exclude("META-INF/*.kotlin_module")
+        exclude("META-INF/*")
 
         pickFirst 'MANIFEST.MF'
 
