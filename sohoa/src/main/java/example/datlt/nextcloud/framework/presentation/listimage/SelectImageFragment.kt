@@ -9,6 +9,7 @@ import example.datlt.nextcloud.framework.presentation.crop.CropFragment.Companio
 import example.datlt.nextcloud.framework.presentation.listimage.adapter.PhotoAdapter
 import example.datlt.nextcloud.util.Constant
 import example.datlt.nextcloud.util.ListFileUtils
+import example.datlt.nextcloud.util.removeTempDocument
 import example.datlt.nextcloud.util.removeTempFile
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
@@ -36,6 +37,7 @@ class SelectImageFragment :
         context?.let {
             it.removeTempFile(Constant.TEMP_CROP)
             it.removeTempFile(Constant.TEMP_COLOR)
+            it.removeTempDocument()
             listStatePhoto.clear()
             listGPUIFilter.clear()
         }

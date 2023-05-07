@@ -8,6 +8,7 @@ import example.datlt.nextcloud.framework.presentation.color.SetColorFragment
 import example.datlt.nextcloud.framework.presentation.common.BaseFragment
 import example.datlt.nextcloud.framework.presentation.crop.CropFragment
 import example.datlt.nextcloud.util.Constant
+import example.datlt.nextcloud.util.removeTempDocument
 import example.datlt.nextcloud.util.removeTempFile
 
 class CameraFragment : BaseFragment<FragmentCameraBinding>(FragmentCameraBinding::inflate) {
@@ -24,6 +25,7 @@ class CameraFragment : BaseFragment<FragmentCameraBinding>(FragmentCameraBinding
                 it.removeTempFile(Constant.TEMP_CAMERA)
                 it.removeTempFile(Constant.TEMP_CROP)
                 it.removeTempFile(Constant.TEMP_COLOR)
+                it.removeTempDocument()
                 CropFragment.listStatePhoto.clear()
                 SetColorFragment.listGPUIFilter.clear()
             }
@@ -32,6 +34,8 @@ class CameraFragment : BaseFragment<FragmentCameraBinding>(FragmentCameraBinding
 
         backEvent()
         initCamera()
+        initZoom()
+        initBrightness()
         captureEvent()
         nextEvent()
     }

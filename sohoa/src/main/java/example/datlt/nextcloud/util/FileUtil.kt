@@ -8,90 +8,11 @@ import android.os.Environment
 import android.util.Log
 import example.datlt.nextcloud.util.Constant.FOLDER_NAME
 import example.datlt.nextcloud.util.Constant.TEMP_CROP
+import kotlinx.coroutines.CoroutineScope
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.launch
 import java.io.File
 import java.io.FileOutputStream
-
-fun Context.saveBitmap(bitmap: Bitmap): String {
-//    val pathFolder = "${Environment.getExternalStorageDirectory().absoluteFile}/$FOLDER_NAME"
-    val pathFolder = "${filesDir.path}/$FOLDER_NAME"
-
-    if (!File(pathFolder).exists()) {
-        File(pathFolder).mkdirs()
-    }
-
-    val filePath = "$pathFolder/${System.currentTimeMillis()}.jpg"
-    val file = File(filePath)
-    if (file.createNewFile()) {
-        try {
-            val outputStream = FileOutputStream(file)
-            bitmap.compress(Bitmap.CompressFormat.JPEG, 100, outputStream)
-            sendBroadcast(
-                Intent(
-                    Intent.ACTION_MEDIA_SCANNER_SCAN_FILE,
-                    Uri.parse("file://$filePath")
-                )
-            )
-        } catch (e: Exception) {
-            Log.d("CHECKSAVED", "saveBitmap: $e")
-            return ""
-        }
-        return file.path
-    }
-    return ""
-}
-
-fun Context.saveBitmapToTempFile(bitmap: Bitmap): String {
-//    val pathFolder = "${Environment.getExternalStorageDirectory().absoluteFile}/$FOLDER_NAME"
-    val pathFolder = filesDir.path
-    if (!File(pathFolder).exists()) {
-        File(pathFolder).mkdirs()
-    }
-
-    val filePath = "$pathFolder/tempFile.jpg"
-    val file = File(filePath)
-    if (file.exists()) file.delete()
-
-    if (file.createNewFile()) {
-        try {
-            val outputStream = FileOutputStream(file)
-            bitmap.compress(Bitmap.CompressFormat.JPEG, 100, outputStream)
-        } catch (e: Exception) {
-            Log.d("CHECKSAVED", "saveBitmap: $e")
-            return ""
-        }
-        return file.path
-    }
-    return ""
-}
-
-fun Context.saveBitmap(bitmap: Bitmap, name: String): String {
-//    val pathFolder = "${Environment.getExternalStorageDirectory().absoluteFile}/$FOLDER_NAME"
-    val pathFolder = "${filesDir.path}/Image"
-
-    if (!File(pathFolder).exists()) {
-        File(pathFolder).mkdirs()
-    }
-
-    val filePath = "$pathFolder/$name"
-    val file = File(filePath)
-    if (file.createNewFile()) {
-        try {
-            val outputStream = FileOutputStream(file)
-            bitmap.compress(Bitmap.CompressFormat.JPEG, 100, outputStream)
-            sendBroadcast(
-                Intent(
-                    Intent.ACTION_MEDIA_SCANNER_SCAN_FILE,
-                    Uri.parse("file://$filePath")
-                )
-            )
-        } catch (e: Exception) {
-            Log.d("CHECKSAVED", "saveBitmap: $e")
-            return ""
-        }
-        return file.path
-    }
-    return ""
-}
 
 fun Context.removeTempFile(tempFileName: String) {
     val pathFolder = "${filesDir.path}/$tempFileName"
@@ -101,6 +22,24 @@ fun Context.removeTempFile(tempFileName: String) {
         if (files != null && files.isNotEmpty()) {
             for (item in files) {
                 item.delete()
+            }
+        }
+    }
+}
+
+fun Context.removeTempDocument() {
+    val pathFolder =
+        "${Environment.getExternalStorageDirectory().absoluteFile}/${Environment.DIRECTORY_DOCUMENTS}/$FOLDER_NAME"
+
+    if (!File(pathFolder).exists()) {
+        return
+    }
+
+    CoroutineScope(Dispatchers.IO).launch {
+        val listFile = File(pathFolder).listFiles()
+        if (!listFile.isNullOrEmpty()) {
+            for (file in listFile) {
+                file.delete()
             }
         }
     }
@@ -180,7 +119,8 @@ fun Context.getAllCreatedFile(): List<String> {
 }
 
 fun Context.createDocumentFile(nameFile: String): String {
-    val pathFolder = "${Environment.getExternalStorageDirectory().absoluteFile}/${Environment.DIRECTORY_DOCUMENTS}/$FOLDER_NAME"
+    val pathFolder =
+        "${Environment.getExternalStorageDirectory().absoluteFile}/${Environment.DIRECTORY_DOCUMENTS}/$FOLDER_NAME"
 
     if (!File(pathFolder).exists()) {
         File(pathFolder).mkdirs()
@@ -199,5 +139,4 @@ fun Context.createDocumentFile(nameFile: String): String {
         return filePath
     }
     return ""
-
 }
