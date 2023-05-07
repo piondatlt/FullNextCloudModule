@@ -220,5 +220,4 @@ fun SelectImageFragment.filterImage(){
     val newList = mutableListOf<Photo>()
     newList.addAll(listPhotoDisplay)
     adapter.submitList(newList)
-    binding.rcvListPhoto.scrollToPosition(0)
 }
