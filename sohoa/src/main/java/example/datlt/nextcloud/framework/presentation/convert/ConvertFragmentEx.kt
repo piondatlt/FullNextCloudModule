@@ -140,29 +140,20 @@ fun ConvertFragment.createPdfFromBitmaps(images: List<String>, outputFile: File)
     val doc = Document(PageSize.A4)
     PdfWriter.getInstance(doc, FileOutputStream(outputFile))
     doc.open()
-
     val fixWidth = 400
-
     var bitmap: Bitmap?
     var resizeBitmap: Bitmap?
-
     val pdfDocument = PdfDocument()
-
     for (image in images) {
-
         bitmap = Glide.with(this).asBitmap().load(image).submit().get()
         val bmWidth = bitmap.width
         val bmHeight = bitmap.height
-
         val fixHeight = (fixWidth.toFloat() / bmWidth.toFloat()) * bmHeight
-
         resizeBitmap = Bitmap.createScaledBitmap(bitmap, fixWidth, fixHeight.toInt(), true)
-
         // Create a new page
         val pageInfo =
             PdfDocument.PageInfo.Builder(resizeBitmap.width, resizeBitmap.height, 1).create()
         val page = pdfDocument.startPage(pageInfo)
-
         // Scale the bitmap to fit the page
         val scaleX = pageInfo.pageWidth.toFloat() / resizeBitmap.width.toFloat()
         val scaleY = pageInfo.pageHeight.toFloat() / resizeBitmap.height.toFloat()
@@ -177,11 +168,9 @@ fun ConvertFragment.createPdfFromBitmaps(images: List<String>, outputFile: File)
             matrix,
             true
         )
-
         // Draw the bitmap on the page
         val canvas = page.canvas
         canvas.drawBitmap(scaledBitmap, 0f, 0f, null)
-
         // Finish the page
         pdfDocument.finishPage(page)
     }

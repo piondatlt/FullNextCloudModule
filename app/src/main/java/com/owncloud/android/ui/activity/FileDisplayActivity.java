@@ -925,8 +925,7 @@ public class FileDisplayActivity extends FileActivity
                 UploadFileOperation.CREATED_BY_USER,
                 false,
                 false,
-                NameCollisionPolicy.ASK_USER
-                                      );
+                NameCollisionPolicy.ASK_USER);
 
         } else {
             Log_OC.d(TAG, "User clicked on 'Update' with no selection");

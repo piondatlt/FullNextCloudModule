@@ -81,10 +81,10 @@
             app:layout_constraintTop_toBottomOf="@+id/toolbar" />
 
         <example.datlt.nextcloud.customview.SeekbarHorizontal
-            android:id="@+id/sbBright"
+            android:id="@+id/sbZoom"
             android:layout_width="0dp"
             android:layout_height="@dimen/_22dp"
-            android:src="@drawable/ic_brightness_seekbar"
+            android:src="@drawable/ic_zoom_seekbar"
             app:layout_constraintBottom_toBottomOf="@+id/cameraView"
             app:layout_constraintEnd_toEndOf="parent"
             android:layout_marginBottom="@dimen/_40dp"
@@ -92,11 +92,11 @@
             app:layout_constraintWidth_percent="0.6" />
 
         <example.datlt.nextcloud.customview.SeekbarVertical
-            android:id="@+id/sbZoom"
+            android:id="@+id/sbBright"
             android:layout_width="@dimen/_22dp"
             android:layout_height="0dp"
             android:layout_marginEnd="@dimen/_30dp"
-            android:src="@drawable/ic_zoom_seekbar"
+            android:src="@drawable/ic_brightness_seekbar"
             app:layout_constraintBottom_toBottomOf="@+id/view2"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintTop_toTopOf="@+id/view2" />

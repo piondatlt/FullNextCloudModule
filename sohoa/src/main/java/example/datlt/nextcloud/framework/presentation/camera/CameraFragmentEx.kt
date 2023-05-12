@@ -40,8 +40,8 @@ fun CameraFragment.initCamera() {
         setLifecycleOwner(viewLifecycleOwner)
         addCameraListener(object : CameraListener() {
             override fun onCameraOpened(options: CameraOptions) {
-            }
 
+            }
             override fun onPictureTaken(result: PictureResult) {
                 super.onPictureTaken(result)
                 if (binding.cameraView.isTakingVideo) {
@@ -49,7 +49,6 @@ fun CameraFragment.initCamera() {
                 }
                 onTakePictureSuccess(result)
             }
-
             override fun onExposureCorrectionChanged(
                 newValue: Float,
                 bounds: FloatArray,
@@ -78,8 +77,6 @@ fun CameraFragment.captureEvent() {
 fun CameraFragment.onTakePictureSuccess(result: PictureResult) {
     val nameImage = "${System.currentTimeMillis()}"
     val tempFile = TEMP_CAMERA
-
-
     context?.let {
         val pathFolder = "${it.filesDir.path}/$tempFile"
         if (!File(pathFolder).exists()) {
