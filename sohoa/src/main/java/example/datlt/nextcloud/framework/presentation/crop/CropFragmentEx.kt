@@ -156,9 +156,10 @@ fun CropFragment.nextEvent() {
     binding.btnNext.setPreventDoubleClickScaleView {
 
         for (i in 0 until listSelectedPhoto.size){
-            val viewHolder: ItemCropAdapter.ViewHolder? =
-                binding.rcvCrop.findViewHolderForAdapterPosition(i) as ItemCropAdapter.ViewHolder?
-            viewHolder?.setState()
+
+            val viewHolder: ItemCropAdapter.ViewHolder? = binding.rcvCrop.findViewHolderForAdapterPosition(i) as ItemCropAdapter.ViewHolder?
+            Log.d("CHECKCROP", "nextEvent: setState() ${viewHolder == null}")
+            viewHolder?.setState() // bam next
         }
 
         //đoạn này crop ảnh

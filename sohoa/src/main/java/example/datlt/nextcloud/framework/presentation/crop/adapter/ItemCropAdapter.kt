@@ -34,7 +34,7 @@ class ItemCropAdapter : ListAdapter<Photo, ItemCropAdapter.ViewHolder>(PhotoDiff
 
     override fun onViewRecycled(holder: ViewHolder) {
         super.onViewRecycled(holder)
-        holder.setState()
+        holder.setState() // khi view bi recycle
     }
 
     inner class ViewHolder(val binding: ItemCropImageBinding) :
@@ -51,17 +51,20 @@ class ItemCropAdapter : ListAdapter<Photo, ItemCropAdapter.ViewHolder>(PhotoDiff
                     binding.cropImageView.cropRect = state.rectCrop
                     binding.cropImageView.rotateImage(state.rotateDegree)
                 }
+                binding.cropImageView.setOnSetCropOverlayReleasedListener{
+                    setState()
+                }
             }
         }
 
         fun rotateLeft() {
             binding.cropImageView.rotateImage(-90)
-            setState()
+            setState() // xoay trai
         }
 
         fun rotateRight() {
             binding.cropImageView.rotateImage(90)
-            setState()
+            setState() // xoay phai
         }
 
         fun cropImage(onCropDone : (bitmap : Bitmap) -> Unit) {
@@ -83,6 +86,7 @@ class ItemCropAdapter : ListAdapter<Photo, ItemCropAdapter.ViewHolder>(PhotoDiff
         fun setState() {
             for (i in 0 until CropFragment.listStatePhoto.size) {
                 if (CropFragment.listStatePhoto[i].idPhoto == photo.id) {
+
                     CropFragment.listStatePhoto[i].rectCrop.set(binding.cropImageView.cropRect)
                     CropFragment.listStatePhoto[i].rotateDegree =
                         binding.cropImageView.rotatedDegrees
