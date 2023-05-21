@@ -115,8 +115,6 @@ fun CameraFragment.nextEvent() {
         }
 
         binding.btnNext.setPreventDoubleClickScaleView {
-            //datlt lam tiep tu day
-
             context?.let {
                 val listSelectedPhoto = mutableListOf<Photo>()
                 val pathFolder = "${it.filesDir.path}/$TEMP_CAMERA"
